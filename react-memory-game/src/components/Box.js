@@ -6,6 +6,7 @@ export default class Box extends Component {
     return (
       <div>
         <div 
+          className="box-container"
           style={{
             height: '7em', 
             width: '7em',
