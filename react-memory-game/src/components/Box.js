@@ -7,8 +7,8 @@ export default class Box extends Component {
       <div>
         <div 
           style={{
-            height: '2em', 
-            width: '2em',
+            height: '7em', 
+            width: '7em',
             backgroundColor: this.props.backgroundColor 
           }}
         />
