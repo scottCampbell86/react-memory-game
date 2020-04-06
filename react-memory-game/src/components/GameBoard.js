@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../styles/GameBoard.css'
-import BoxList from './BoxList';
+import BoxCard from './BoxCard';
+import shuffle from 'shuffle-array';
 const CardState = {
   HIDING: 0,
   SHOWING: 1, 
@@ -29,15 +30,38 @@ export default class GameBoard extends Component {
       {id: 14, cardState: CardState.HIDING, backgroundColor: 'lightskyblue'},
       {id: 15, cardState: CardState.HIDING, backgroundColor: 'lightskyblue'}
     ],
-    // shuffleBoxes: shuffle(this.state.boxes)
   }
-    
-  render() {
-    return (
-      <div>
-        hi, i'm the GameBoard :)
-        <BoxList boxes={this.state.boxes} />
-      </div>
-    )
+
+  onClick = (argId) => {
+    this.setState(preState => {
+      let boxes = preState.boxes.map(box => (
+        box.id === argId ? {
+          ...box, 
+          cardState: box.cardState === this.props.CardState.HIDING ? this.props.CardState.MATCHING : this.props.CardState.Hiding 
+        } : box ));
+        return {boxes};
+      })
   }
+
+  shuffleBoxes = (array) => {
+    return shuffle(array);
+  }
+
+
+
+    render() {
+      let mappedBoxes = this.state.boxes.map(box => (
+        <BoxCard  id={box.id} 
+          isShowing={box.cardState !== CardState.HIDING} 
+          backgroundColor={box.backgroundColor} 
+          onClick={()=>this.onClick(box.id)}
+        />
+      ))
+      let mappedAndShuffled = this.shuffleBoxes(mappedBoxes)
+      return (
+        <div>
+          {mappedAndShuffled}
+        </div>
+      )
+    }
 }

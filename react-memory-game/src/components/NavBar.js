@@ -7,7 +7,7 @@ class Navbar extends Component {
   render() {
     return (
       <header>
-        <h2><a>NavBar</a></h2>
+        <h2><a>Memory Game</a></h2>
         <nav>
           <li><a>New Game</a></li>
           {/* <li><a>Home</a></li>
