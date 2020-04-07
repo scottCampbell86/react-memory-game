@@ -42,6 +42,7 @@ export default class GameBoard extends Component {
   }
 
   onClick = (id) => {
+    console.log('CARD CLICK HEARD')
     const mapBoxState = (arrayOfBoxes, idsToChange, oughtIdState) => {
       return arrayOfBoxes.map(box => {
         if (idsToChange.includes(box.id)) {
@@ -71,13 +72,13 @@ export default class GameBoard extends Component {
       showingBoxes[0].backgroundColor === showingBoxes[1].backgroundColor) {
     boxesVar = mapBoxState(boxesVar, showingIds, CardState.MATCHING);
   } else if (showingBoxes.length === 2) {
-    let hidingBoxes = mapBoxState(this.state.boxes, showingIds, CardState.HIDING);
+    let hidingBoxes = mapBoxState(boxesVar, showingIds, CardState.HIDING);
     
     noClickVar = true;
     
-    this.setState((boxes, noClick) => {
+    this.setState({hidingBoxes, noClickVar}, () => {
       setTimeout(() => {
-        this.setState({boxes: hidingBoxes, noClick: false});
+        this.setState({boxes: hidingBoxes, noClick: noClickVar});
       }, 1300);
     });
     return;
