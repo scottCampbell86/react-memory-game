@@ -3,18 +3,17 @@ import '../styles/BoxCard.css'
 
 export default class BoxCard extends Component {
   
-
   render() {
-    let style = {};
-    if(this.props.showing) {
-      style.backgroundColor = this.props.backgroundColor 
-    }
+  let style = {};
+  if (this.props.showing) {
+  style.backgroundColor = this.props.backgroundColor;
+  }
     return (
-        <div 
-          className="box-container"
-          style={style}
-          onClick={this.props.onClick}
-        />
-    )
+    <div
+      onClick={this.props.onClick}
+      className="box-container"
+      style={style}
+    />
+  );
   }
 }
