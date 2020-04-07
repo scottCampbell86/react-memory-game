@@ -42,7 +42,7 @@ export default class GameBoard extends Component {
   handleNewGame = () => {
     let newBoxes = this.state.boxes.map(box => ({
       ...box,
-      // /*cardState*/: /*CardState*/.HIDING
+      isFlipped: false
     }));
     let newShuffBoxes = shuffle(newBoxes);
     this.setState({boxes: newShuffBoxes});
