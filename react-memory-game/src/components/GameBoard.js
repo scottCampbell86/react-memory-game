@@ -58,43 +58,45 @@ export default class GameBoard extends Component {
         if (idsToChange.includes(boxId)) {
           return {
             ...box, 
-            /*cardState*/: newIdState
+            matching: newIdState
           }
         }
         console.log({box})
         return box
       })
     }
+
     const foundBox = this.state.boxes.find(box => box.id === boxId);
     
-    if (this.state.noClick || foundBox./*cardState*/ !== /*CardState*/.HIDING) {
+    if (this.state.isFlipped || foundBox.matching !== isFlipped) {
       return;
   }
 
-  let noClickVar = false;
+  let trueMatch = matching;
 
-  let boxesVar = mapBoxState(this.state.boxes, [boxId], /*CardState*/.isFlipped);
+  let falseMatch = false;
   
-  const isFlippedBoxes =  boxesVar.filter((box) => box./*cardState*/ === /*CardState*/.isFlipped);
+  let boxesVar = mapBoxState(this.state.boxes, [boxId], this.state.isFlipped);
+  
+  const isFlippedBoxes =  boxesVar.filter((box) => box.isFlipped);
   
   const isFlippedBoxIds = isFlippedBoxes.map(box => box.id);
   
   if (isFlippedBoxes.length === 2 &&
       isFlippedBoxes[0].backgroundColor === isFlippedBoxes[1].backgroundColor) {
-    boxesVar = mapBoxState(boxesVar, isFlippedBoxIds, /*CardState*/.MATCHING);
+    boxesVar = mapBoxState(boxesVar, isFlippedBoxIds, trueMatch);
   } else if (isFlippedBoxes.length === 2) {
-    let hidingBoxes = mapBoxState(boxesVar, isFlippedBoxIds, /*CardState*/.HIDING);
+    let hidingBoxes = mapBoxState(boxesVar, isFlippedBoxIds, falseMatch);
+
     
-    noClickVar = true;
-    
-    this.setState({hidingBoxes, noClickVar}, () => {
+    this.setState({hidingBoxes}, () => {
       setTimeout(() => {
-        this.setState({boxes: hidingBoxes, noClickVar: false});
+        this.setState({boxes: hidingBoxes, isFlipped: false});
       }, 1300);
     });
     return;
     }
-    this.setState({boxes: boxesVar, noClick: false})
+    this.setState({boxes: boxesVar, isFlipped: false})
   }
 
     render() {
