@@ -3,7 +3,6 @@ import '../styles/BoxCard.css'
 
 export default class BoxCard extends Component {
   
-
   render() {
     let style = {};
     if(this.props.showing) {

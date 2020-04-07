@@ -42,7 +42,7 @@ export default class GameBoard extends Component {
   }
 
   onClick = (id) => {
-    console.log('CARD CLICK HEARD')
+    console.log(`CARD CLICK HEARD: BOX ID:${this.state.boxes.id}`)
     const mapBoxState = (arrayOfBoxes, idsToChange, newIdState) => {
       return arrayOfBoxes.map(box => {
         if (idsToChange.includes(box.id)) {
@@ -78,12 +78,12 @@ export default class GameBoard extends Component {
     
     this.setState({hidingBoxes, noClickVar}, () => {
       setTimeout(() => {
-        this.setState({boxes: hidingBoxes, noClick: noClickVar});
+        this.setState({boxes: hidingBoxes, noClickVar: false});
       }, 1300);
     });
     return;
     }
-    this.setState({boxes: boxesVar, noClick: noClickVar})
+    this.setState({boxes: boxesVar, noClick: false})
   }
 
     render() {
@@ -95,7 +95,7 @@ export default class GameBoard extends Component {
         <BoxCard  id={box.id} 
           showing={box.cardState !== CardState.HIDING} 
           backgroundColor={box.backgroundColor} 
-          onClick={()=>this.onClick(box.id)}
+          onClick={() => this.onClick(box.id)}
         />
       ))
       let mappedAndShuffled = shuffleBoxes(mappedBoxes)
