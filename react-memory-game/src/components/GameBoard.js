@@ -50,9 +50,9 @@ export default class GameBoard extends Component {
 
   handleClick = (id) => {
     this.isFlipped(id);
-    console.log(`CARD CLICK HEARD: BOX ID:${id}`)
+    //console.log(`CARD CLICK HEARD: BOX ID:${id}`)
     const boxId = id
-    console.log({boxId})
+    //console.log({boxId})
     const mapBoxState = (arrayOfBoxes, idsToChange, newIdState) => {
       return arrayOfBoxes.map(box => {
         if (idsToChange.includes(boxId)) {
@@ -68,11 +68,11 @@ export default class GameBoard extends Component {
 
     const foundBox = this.state.boxes.find(box => box.id === boxId);
     
-    if (this.state.isFlipped || foundBox.matching !== isFlipped) {
+    if (this.state.isFlipped || foundBox.matching !== this.state.isFlipped) {
       return;
   }
 
-  let trueMatch = matching;
+  let trueMatch = true;
 
   let falseMatch = false;
   
