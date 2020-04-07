@@ -5,7 +5,7 @@ export default class BoxCard extends Component {
   
   render() {
   let style = {};
-  if (this.props.showing) {
+  if (this.props.isFlipped) {
   style.backgroundColor = this.props.backgroundColor;
   }
     return (
