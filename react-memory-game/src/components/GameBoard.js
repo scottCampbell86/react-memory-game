@@ -9,10 +9,9 @@ const CardState = {
 }
 
 export default class GameBoard extends Component {
-
   state = {
-    noClick: false,
-    boxes: [
+    noClick : false,
+    boxes : [
       {id: 0, cardState: CardState.HIDING, backgroundColor: 'red'},
       {id: 1, cardState: CardState.HIDING, backgroundColor: 'red'},
       {id: 2, cardState: CardState.HIDING, backgroundColor: 'navy'},
@@ -29,35 +28,69 @@ export default class GameBoard extends Component {
       {id: 13, cardState: CardState.HIDING, backgroundColor: 'pink'},
       {id: 14, cardState: CardState.HIDING, backgroundColor: 'lightskyblue'},
       {id: 15, cardState: CardState.HIDING, backgroundColor: 'lightskyblue'}
-    ],
+    ]
   }
 
-  onClick = (argId) => {
-    this.setState(preState => {
-      let boxes = preState.boxes.map(box => (
-        box.id === argId ? {
-          ...box, 
-          cardState: box.cardState === this.props.CardState.HIDING ? this.props.CardState.MATCHING : this.props.CardState.Hiding 
-        } : box ));
-        return {boxes};
+  onClick = (id) => {
+    const mapBoxState = (boxes, idsToChange, newBoxState) => {
+      return boxes.map(box => {
+        if (idsToChange.includes(box.id)) {
+          return {
+            ...box, 
+            cardState: newBoxState
+          }
+        }
+        return box
       })
+    }
+
+  const foundBox = this.state.boxes.find(box => box.id === id);
+
+  if (this.state.boxes.noClick || foundBox.cardState !== CardState.HIDING) {
+    return;
   }
 
-  shuffleBoxes = (array) => {
-    return shuffle(array);
+  let noClick = false;
+    
+  let boxes = mapBoxState(this.state.boxes, [id], CardState.SHOWING);
+  
+  const showingBoxes =  boxes.filter((box) => box.cardState === CardState.SHOWING);
+  
+  const ids = showingBoxes.map(box => box.id);
+  
+  if (showingBoxes.length === 2 &&
+      showingBoxes[0].backgroundColor === showingBoxes[1].backgroundColor) {
+    boxes = mapBoxState(boxes, ids, CardState.MATCHING);
+  } else if (showingBoxes.length === 2) {
+    let hidingBoxes = mapBoxState(boxes, ids, CardState.HIDING);
+    
+    noClick = true;
+    
+    this.setState({boxes, noClick}, () => {
+      setTimeout(() => {
+        this.setState({boxes: hidingBoxes, noClick: false});
+      }, 1300);
+    });
+    return;
   }
+  
+  this.setState({boxes, noClick});
+}
 
 
 
     render() {
+      const shuffleBoxes = (array) => {
+        return shuffle(array);
+      }
       let mappedBoxes = this.state.boxes.map(box => (
         <BoxCard  id={box.id} 
-          isShowing={box.cardState !== CardState.HIDING} 
+          showing={box.cardState !== this.state.boxes.CardState.HIDING} 
           backgroundColor={box.backgroundColor} 
           onClick={()=>this.onClick(box.id)}
         />
       ))
-      let mappedAndShuffled = this.shuffleBoxes(mappedBoxes)
+      let mappedAndShuffled = shuffleBoxes(mappedBoxes)
       return (
         <div>
           {mappedAndShuffled}
